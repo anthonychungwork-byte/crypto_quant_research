@@ -99,8 +99,15 @@ stage6:
 
 all: sync hooks check
 	@echo ""
-	@echo "✓ Environment synced"
-	@echo "✓ Pre-commit hooks installed"
-	@echo "✓ Lint / type / test passing"
+	@echo "[ok] Environment synced"
+	@echo "[ok] Pre-commit hooks installed"
+	@echo "[ok] Lint / type / test passing"
 	@echo ""
 	@echo "Ready. Launch research with: make notebook"
+	@echo "Or run the full pipeline end-to-end:  bash scripts/run_pipeline.sh"
+
+demo: sync
+	@echo "Executing notebooks 02 -> 08 (~10 min if data + grid cached)..."
+	bash scripts/run_pipeline.sh
+	@echo ""
+	@echo "[ok] Demo complete. See results/figures/ and results/tables/"
