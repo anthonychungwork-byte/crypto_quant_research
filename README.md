@@ -96,16 +96,26 @@ Everything that demonstrates **methodology, engineering, and statistical rigor**
 
 ## Status
 
-| Stage | Status |
-|-------|--------|
-| 0 — Hypothesis | ✅ Locked: Asian Session Extreme Fade (BTCUSDT, 1h) |
-| 1 — Data + Split | ✅ 37,225 bars × 6 symbols, 0 missing, split persisted |
-| 2 — IS Grid Search | 🔄 1,500-trial grid in progress |
-| 3 — OOS Validation | ⏳ |
-| 4 — Walk-Forward | ⏳ |
-| 5 — Holdout | ⏳ (single shot) |
-| 6 — Multi-Coin | ⏳ |
-| 8 — Postmortem | ⏳ |
+Three independent hypotheses have been tested under the 6-stage SOP. All three were retired; details in [`results/POSTMORTEM.md`](results/POSTMORTEM.md).
+
+| # | Hypothesis | Source | Killed at | Why |
+|---|-----------|--------|-----------|-----|
+| v1 | Asian Session Extreme Fade | Original | Stage 2 | 0/1500 trials profitable — reversal doesn't work on crypto |
+| v2 | Stretched Volume Profile Fade | [Axia Futures](https://www.youtube.com/@AxiaFutures) | Stage 2 | 0/300 trials profitable; edge eaten by HORROR cost |
+| v3 | Time-Series Momentum (TSMOM) | [Han et al 2023](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4675565) | Stage 4 | 30/30 IS + 9/10 OOS pass, but only 53% profitable months |
+
+Each retirement was clean — **no parameter tweaking after results were observed**. This is the methodology working as designed.
+
+### What's tested across all 3 hypotheses
+- ✅ Stage 0 hypothesis lockdown (pre-commitment statement)
+- ✅ Stage 1 data quality + IS/OOS/Holdout split
+- ✅ Stage 2 in-sample grid search with HORROR cost
+- ✅ Stage 3 OOS validation gate (for v3)
+- ✅ Stage 4 walk-forward (for v3)
+- ✅ No-lookahead unit tests including meta-test (a deliberately-broken cheat strategy MUST fail)
+
+### Next
+v4 candidate: TSMOM + volatility-regime filter (only trade during clear-trend regimes, sit out chop). Requires fresh Stage 0 hypothesis under SOP — not a v3 tweak.
 
 ## License
 
