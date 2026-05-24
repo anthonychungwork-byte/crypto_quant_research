@@ -103,6 +103,7 @@ Three independent hypotheses have been tested under the 6-stage SOP. All three w
 | v1 | Asian Session Extreme Fade | Original | Stage 2 | 0/1500 trials profitable — reversal doesn't work on crypto |
 | v2 | Stretched Volume Profile Fade | [Axia Futures](https://www.youtube.com/@AxiaFutures) | Stage 2 | 0/300 trials profitable; edge eaten by HORROR cost |
 | v3 | Time-Series Momentum (TSMOM) | [Han et al 2023](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4675565) | Stage 4 | 30/30 IS + 9/10 OOS pass, but only 53% profitable months |
+| v4 | TSMOM + Cross-Asset Consensus Filter | Original (addresses v3 fragility) | Stage 4 | 27/27 IS + 6/10 OOS pass, walk-forward 20% (worse than v3) |
 
 Each retirement was clean — **no parameter tweaking after results were observed**. This is the methodology working as designed.
 

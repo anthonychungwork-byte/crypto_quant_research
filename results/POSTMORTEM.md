@@ -19,6 +19,7 @@ A failed strategy is a successful execution of the methodology: the SOP exists p
 | v1 | Asian Session Extreme Fade | RETIRED | Stage 2 | 0/1500 trials profitable |
 | v2 | Stretched Volume Profile Fade | RETIRED | Stage 2 | 0/300 trials profitable; best PF 0.92 |
 | v3 | Time-Series Momentum (TSMOM) | RETIRED | Stage 4 | Stage 2+3 passed; walk-forward 53% < 80% |
+| v4 | TSMOM + Cross-Asset Consensus Filter | RETIRED | Stage 4 | Stage 2+3 passed; walk-forward **20%** (worse than v3) |
 
 ---
 
@@ -116,6 +117,48 @@ Per-month profitability of 53% is genuinely insufficient for client-following us
 - Add regime filter (e.g., only trade when realized volatility expanding or when ADX shows trend)
 - Combine with mean-reversion signal during ranging regimes
 - These would be NEW hypotheses with their own Stage 0 lockdown, not "v3 tweaks"
+
+---
+
+## v4 — TSMOM + Cross-Asset Consensus Filter
+
+**Source**: Hypothesis introduced to address v3 walk-forward failure. Only trade per-coin TSMOM signals when ≥ N of 6 coins agree on direction. New mechanism, fresh Stage 0 lock.
+
+**Notebook**: [`notebooks/01d_hypothesis_v4_tsmom_consensus.ipynb`](../notebooks/01d_hypothesis_v4_tsmom_consensus.ipynb)
+**Search log**: [`results/tables/is_search_log_v4_tsmom_consensus.csv`](tables/is_search_log_v4_tsmom_consensus.csv)
+**Walk-forward**: [`results/tables/walkforward_v4_tsmom_consensus.csv`](tables/walkforward_v4_tsmom_consensus.csv)
+**Chosen config**: [`data/processed/chosen_config_v4_tsmom_consensus.json`](../data/processed/chosen_config_v4_tsmom_consensus.json)
+**Status**: RETIRED at Stage 4
+
+### Stage 2 — IS grid (27 trials × 6 coins, HORROR cost)
+- PF > 1.0: **27 / 27 (100%)** ✅
+- PF > 1.3: 21 / 27
+- Sharpe > 0: 27 / 27
+- Sharpe > 1.0: 0 / 27 (notably lower than v3's 4/30)
+- Best PF: 2.03 (lookback=4, threshold=5%, consensus=4)
+- Best Sharpe: 0.99 (lookback=4, threshold=0%, consensus=3)
+
+### Stage 3 — OOS-1 validation (top 10)
+- Pass 70%-retention: **6 / 10** ✅
+- Chosen: lookback=4w, threshold=2%, consensus=4
+- **OOS PF 2.25, Sharpe 1.16, MaxDD 6.96%** (lowest DD of any candidate strategy!)
+- PF retention 1.25× (better than IS)
+
+### Stage 4 — Walk-forward (35 active monthly windows)
+- Profitable months: **7 / 35 (20%)** — WORSE than v3
+- Required: ≥ 80%
+- **Stage 4 FAIL** ❌
+
+### Pattern observed
+The consensus filter behaved counter to hypothesis. Rather than smoothing performance across regimes, it CONCENTRATED trading into the strongest trend regimes (when most coins agreed) — those few months produced the strong aggregate numbers, but most months had zero trades or single bad trades.
+
+The consensus filter is conceptually "wait for trend confirmation". In practice that means "miss the start of trends + sit out the chop + still take losses at trend ends".
+
+### Lesson
+- Two consecutive momentum strategies (v3 pure, v4 filtered) both failed walk-forward.
+- TSMOM-family on crypto H1 + HORROR cost appears to be fundamentally regime-fragile at the monthly granularity we measure.
+- Per v4's pre-commitment: no v5 may attempt another TSMOM tweak. Any v5 must use a fundamentally different mechanism (e.g., breakout, calendar-effect, pairs).
+- Important: v4's OOS MaxDD of 7% was the LOWEST of any candidate. The absolute risk profile is excellent. The walk-forward bar is what killed it — and that bar is doing its job (catching strategies whose aggregate good performance is regime-luck).
 
 ---
 
