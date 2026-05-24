@@ -26,6 +26,7 @@ import pytest
 
 from quant.strategies.base import Signal, Strategy, StrategyConfig
 from quant.strategies.mean_reversion import MeanReversionConfig, MeanReversionStrategy
+from quant.strategies.stretched_vp import StretchedVPConfig, StretchedVPStrategy
 
 
 class _AlwaysFlatStrategy(Strategy):
@@ -137,5 +138,12 @@ class TestNoLookaheadInvariant:
         """The production Asian-session-fade strategy is causal."""
         strategy = MeanReversionStrategy(
             MeanReversionConfig(name="mean_reversion", timeframe="1h")
+        )
+        _assert_no_lookahead(strategy, synthetic_ohlcv)
+
+    def test_stretched_vp_passes(self, synthetic_ohlcv: pd.DataFrame) -> None:
+        """The Stretched VP strategy is causal (uses prior-day VP only)."""
+        strategy = StretchedVPStrategy(
+            StretchedVPConfig(name="stretched_vp", timeframe="1h")
         )
         _assert_no_lookahead(strategy, synthetic_ohlcv)

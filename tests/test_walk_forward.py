@@ -30,10 +30,11 @@ class TestGenerateWindows:
             assert w.test_start < w.test_end
 
     def test_windows_step_forward(self) -> None:
+        from itertools import pairwise
         start = pd.Timestamp("2022-01-01", tz="UTC")
         end = pd.Timestamp("2024-01-01", tz="UTC")
         windows = generate_windows(start, end, step_months=1)
-        for prev, curr in zip(windows[:-1], windows[1:], strict=True):
+        for prev, curr in pairwise(windows):
             assert curr.train_start > prev.train_start
 
     def test_no_windows_if_span_too_short(self) -> None:
