@@ -25,6 +25,7 @@ import pandas as pd
 import pytest
 
 from quant.strategies.base import Signal, Strategy, StrategyConfig
+from quant.strategies.mean_reversion import MeanReversionConfig, MeanReversionStrategy
 
 
 class _AlwaysFlatStrategy(Strategy):
@@ -131,3 +132,10 @@ class TestNoLookaheadInvariant:
         cheat = _LookAheadCheatStrategy(StrategyConfig(name="cheat", timeframe="1h"))
         with pytest.raises(AssertionError):
             _assert_no_lookahead(cheat, synthetic_ohlcv)
+
+    def test_mean_reversion_passes(self, synthetic_ohlcv: pd.DataFrame) -> None:
+        """The production Asian-session-fade strategy is causal."""
+        strategy = MeanReversionStrategy(
+            MeanReversionConfig(name="mean_reversion", timeframe="1h")
+        )
+        _assert_no_lookahead(strategy, synthetic_ohlcv)
