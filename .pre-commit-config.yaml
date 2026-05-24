@@ -35,9 +35,6 @@ repos:
         files: ^src/
         args: [--config-file=pyproject.toml]
 
-  - repo: https://github.com/kynan/nbstripout
-    rev: 0.7.1
-    hooks:
-      - id: nbstripout
-        description: "Strip outputs from Jupyter notebooks before commit"
-        files: \.ipynb$
+# nbstripout intentionally omitted: notebook outputs (figures, tables) are
+# committed so the rendered narrative is visible on GitHub without requiring
+# a clone + execute. Bloat risk is minimal at this project's scale.
