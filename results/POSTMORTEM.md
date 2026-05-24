@@ -20,6 +20,7 @@ A failed strategy is a successful execution of the methodology: the SOP exists p
 | v2 | Stretched Volume Profile Fade | RETIRED | Stage 2 | 0/300 trials profitable; best PF 0.92 |
 | v3 | Time-Series Momentum (TSMOM) | RETIRED | Stage 4 | Stage 2+3 passed; walk-forward 53% < 80% |
 | v4 | TSMOM + Cross-Asset Consensus Filter | RETIRED | Stage 4 | Stage 2+3 passed; walk-forward **20%** (worse than v3) |
+| v5 | BTC Overnight + N-day MAX | RETIRED | Stage 3 | Best IS PF 5.56 / Sharpe 1.52; OOS PF 0.18-0.71 — wildly overfit |
 
 ---
 
@@ -159,6 +160,44 @@ The consensus filter is conceptually "wait for trend confirmation". In practice 
 - TSMOM-family on crypto H1 + HORROR cost appears to be fundamentally regime-fragile at the monthly granularity we measure.
 - Per v4's pre-commitment: no v5 may attempt another TSMOM tweak. Any v5 must use a fundamentally different mechanism (e.g., breakout, calendar-effect, pairs).
 - Important: v4's OOS MaxDD of 7% was the LOWEST of any candidate. The absolute risk profile is excellent. The walk-forward bar is what killed it — and that bar is doing its job (catching strategies whose aggregate good performance is regime-luck).
+
+---
+
+## v5 — BTC Overnight + N-day MAX
+
+**Source**: [QuantPedia (2024) — How To Profitably Trade Bitcoin's Overnight Sessions](https://quantpedia.com/how-to-profitably-trade-bitcoins-overnight-sessions/). Enter BTC long at Fri/Mon/Tue 22:00 UTC when at N-day high, exit next morning at 14:00 UTC. Single-asset, time-of-day, momentum-filtered breakout.
+
+**Notebook**: [`notebooks/01e_hypothesis_v5_overnight_max.ipynb`](../notebooks/01e_hypothesis_v5_overnight_max.ipynb)
+**Search log**: [`results/tables/is_search_log_v5_overnight_max.csv`](tables/is_search_log_v5_overnight_max.csv)
+**Status**: RETIRED at Stage 3
+
+### Stage 2 — IS grid (108 trials)
+- PF > 1.0: **96 / 108 (89%)** ✅
+- PF > 1.3: 58 / 108
+- Sharpe > 1.0: **12 / 108** ✅
+- Best PF: **5.56** (lookback=10d, prox=0%, entry=22, exit=14)
+- Best Sharpe: **1.52**
+- Best MaxDD: **1.4%** (lowest across all 5 strategies)
+- Win rate at top: 67-73%
+- **Stage 2 PASS** (best metrics across all 5 strategies)
+
+### Stage 3 — OOS-1 validation (top 10)
+- Pass 70%-retention: **0 / 10** ❌
+- OOS PF range: 0.18 - 0.71 (all losing)
+- OOS Sharpe range: -3.36 to -0.88
+- Average retention: 0.08 (92% drop from IS)
+- **Stage 3 catastrophic FAIL**
+
+### Pattern observed
+The strategy ENTRY criteria (Fri/Mon/Tue at 22:00 UTC at 10-day MAX) only fired 13-17 times over 2.5 years of IS data. With such few samples, the 67-73% win rate that produced PF 4-5 is well within range of statistical noise. OOS over a much shorter period (~10 months) had only 4-5 entries, and they happened to land in losing periods.
+
+This is **textbook small-sample overfitting**: high IS metrics driven by lucky coincidence in a tiny sample, completely failing to generalize. The Stage 3 OOS gate is designed precisely for this.
+
+### Lesson
+- Strategy specs that fire very few times per year are vulnerable to apparent edge being statistical noise.
+- Even when an external party (QuantPedia) reports excellent results on a strategy, the OOS gate must be respected.
+- The QuantPedia 9-year backtest may have benefited from a different cost regime or specific historical periods that don't generalize.
+- Specifically: their reported results were "in-sample pre-Oct 2021 and OOS-tested Oct 2021 - Oct 2024" — but their OOS may have benefited from the 2023-2024 bull run, which our OOS-1 (Jul 2024 - May 2025) doesn't cover the same way.
 
 ---
 

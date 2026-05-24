@@ -104,6 +104,7 @@ Three independent hypotheses have been tested under the 6-stage SOP. All three w
 | v2 | Stretched Volume Profile Fade | [Axia Futures](https://www.youtube.com/@AxiaFutures) | Stage 2 | 0/300 trials profitable; edge eaten by HORROR cost |
 | v3 | Time-Series Momentum (TSMOM) | [Han et al 2023](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4675565) | Stage 4 | 30/30 IS + 9/10 OOS pass, but only 53% profitable months |
 | v4 | TSMOM + Cross-Asset Consensus Filter | Original (addresses v3 fragility) | Stage 4 | 27/27 IS + 6/10 OOS pass, walk-forward 20% (worse than v3) |
+| v5 | BTC Overnight + N-day MAX | [QuantPedia 2024](https://quantpedia.com/how-to-profitably-trade-bitcoins-overnight-sessions/) | Stage 3 | Best IS PF 5.56 / Sharpe 1.52, but OOS-1 0/10 pass — small-sample overfit |
 
 Each retirement was clean — **no parameter tweaking after results were observed**. This is the methodology working as designed.
 
