@@ -98,13 +98,14 @@ Everything that demonstrates **methodology, engineering, and statistical rigor**
 
 | Stage | Status |
 |-------|--------|
-| 0 — Hypothesis | _in progress_ |
-| 1 — Data split | _pending_ |
-| 2 — IS optimization | _pending_ |
-| 3 — OOS validation | _pending_ |
-| 4 — Walk-forward | _pending_ |
-| 5 — Holdout | _pending (single shot)_ |
-| 6 — Multi-coin | _pending_ |
+| 0 — Hypothesis | ✅ Locked: Asian Session Extreme Fade (BTCUSDT, 1h) |
+| 1 — Data + Split | ✅ 37,225 bars × 6 symbols, 0 missing, split persisted |
+| 2 — IS Grid Search | 🔄 1,500-trial grid in progress |
+| 3 — OOS Validation | ⏳ |
+| 4 — Walk-Forward | ⏳ |
+| 5 — Holdout | ⏳ (single shot) |
+| 6 — Multi-Coin | ⏳ |
+| 8 — Postmortem | ⏳ |
 
 ## License
 
