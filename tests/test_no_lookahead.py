@@ -27,6 +27,7 @@ import pytest
 from quant.strategies.base import Signal, Strategy, StrategyConfig
 from quant.strategies.mean_reversion import MeanReversionConfig, MeanReversionStrategy
 from quant.strategies.stretched_vp import StretchedVPConfig, StretchedVPStrategy
+from quant.strategies.tsmom import TSMOMConfig, TSMOMStrategy
 
 
 class _AlwaysFlatStrategy(Strategy):
@@ -147,3 +148,10 @@ class TestNoLookaheadInvariant:
             StretchedVPConfig(name="stretched_vp", timeframe="1h")
         )
         _assert_no_lookahead(strategy, synthetic_ohlcv)
+
+    def test_tsmom_passes(self, synthetic_ohlcv: pd.DataFrame) -> None:
+        """TSMOM uses only trailing returns → causal."""
+        strategy = TSMOMStrategy(
+            TSMOMConfig(name="tsmom", timeframe="1h", lookback_weeks=1, signal_threshold=0.01)
+        )
+        _assert_no_lookahead(strategy, synthetic_ohlcv, split_idx=200)

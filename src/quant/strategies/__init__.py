@@ -3,6 +3,7 @@
 from quant.strategies.base import Signal, Strategy, StrategyConfig
 from quant.strategies.mean_reversion import MeanReversionConfig, MeanReversionStrategy
 from quant.strategies.stretched_vp import StretchedVPConfig, StretchedVPStrategy
+from quant.strategies.tsmom import TSMOMConfig, TSMOMStrategy
 
 __all__ = [
     "MeanReversionConfig",
@@ -12,4 +13,6 @@ __all__ = [
     "StrategyConfig",
     "StretchedVPConfig",
     "StretchedVPStrategy",
+    "TSMOMConfig",
+    "TSMOMStrategy",
 ]
