@@ -1,0 +1,39 @@
+# Mean Reversion strategy — EXAMPLE configuration.
+#
+# Production values live in configs/strategy_mean_rev.prod.yaml, which is
+# gitignored as part of the HYBRID IP-protection policy (see .gitignore).
+# Numbers below are schema-illustrative, not the production parameter set.
+
+name: mean_reversion_example
+timeframe: 1h
+symbol: BTCUSDT
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Signal generation (example schema — actual parameters set at Stage 0 lock)
+# ─────────────────────────────────────────────────────────────────────────────
+signal:
+  lookback_bars: 24            # rolling window for the baseline mean
+  entry_z_threshold: 2.0       # enter when |z-score| crosses this
+  exit_z_threshold: 0.5        # exit when |z-score| crosses back through
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Session filter (UTC hours)
+# ─────────────────────────────────────────────────────────────────────────────
+session:
+  start_hour_utc: 0
+  end_hour_utc: 13
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Risk management
+# ─────────────────────────────────────────────────────────────────────────────
+risk:
+  risk_per_trade: 0.01         # fraction of equity at risk per trade
+  stop_loss_pct: 0.02          # stop distance as fraction of entry price
+  take_profit_pct: 0.04        # TP distance as fraction of entry price
+  max_concurrent_positions: 1
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Backtest cost mode (must be 'horror' for headline numbers — see METHODOLOGY)
+# ─────────────────────────────────────────────────────────────────────────────
+backtest:
+  cost_mode: horror
