@@ -91,12 +91,9 @@ data/processed/*
 !data/processed/.gitkeep
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Generated figures / tables (recreate via `make all`)
+# Generated figures / tables are COMMITTED so the rendered narrative is
+# visible on GitHub. Only production-leaking artifacts are ignored above.
 # ─────────────────────────────────────────────────────────────────────────────
-results/figures/*
-!results/figures/.gitkeep
-results/tables/*
-!results/tables/.gitkeep
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Logs / local env
